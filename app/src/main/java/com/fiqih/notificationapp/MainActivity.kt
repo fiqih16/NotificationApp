@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var notificationManager: NotificationManagerCompat
 
     companion object{
-        const val CHANNEL_1_ID = "channel1"
-        const val CHANNEL_2_ID = "channel2"
+        const val BUTTON1 = "btn1"
+        const val BUTTON2 = "btn2"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         btn_et.setOnClickListener {
             val title = JudulEt.text.toString()
             val message = IsiEt.text.toString()
-            val builder = NotificationCompat.Builder(this,CHANNEL_1_ID)
+            val builder = NotificationCompat.Builder(this,BUTTON1)
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                 .setContentTitle(title)
                 .setContentText(message)
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         btn_et2.setOnClickListener {
             val title = JudulEt.text.toString()
             val message = IsiEt.text.toString()
-            val builder = NotificationCompat.Builder(this,CHANNEL_2_ID)
+            val builder = NotificationCompat.Builder(this,BUTTON2)
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                 .setContentTitle(title)
                 .setContentText(message)
@@ -77,19 +77,19 @@ class MainActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel)
 
             // Button Notif
-            val channel1 = NotificationChannel(
-                CHANNEL_1_ID, "Channel Satu", NotificationManager.IMPORTANCE_HIGH
+            val btn1 = NotificationChannel(
+                BUTTON1, "Channel Satu", NotificationManager.IMPORTANCE_HIGH
             )
-            channel1.description = "Ini adalah channel 1"
+            btn1.description = "Ini adalah channel 1"
 
-            val channel2 = NotificationChannel(
-                CHANNEL_2_ID, "Channel Dua", NotificationManager.IMPORTANCE_LOW
+            val btn2 = NotificationChannel(
+                BUTTON2, "Channel Dua", NotificationManager.IMPORTANCE_LOW
             )
-            channel1.description = "Ini adalah channel 2"
+            btn1.description = "Ini adalah channel 2"
 
             val manager = getSystemService(NotificationManager::class.java)
-            manager?.createNotificationChannel(channel1)
-            manager?.createNotificationChannel(channel2)
+            manager?.createNotificationChannel(btn1)
+            manager?.createNotificationChannel(btn2)
         }
     }
 
