@@ -6,12 +6,17 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import kotlinx.android.synthetic.main.activity_main.*
+import java.net.URL
+import java.net.URLEncoder
 
 class MainActivity : AppCompatActivity() {
     private val CHANNEL_ID = "channel_id_example_01"
@@ -33,6 +38,19 @@ class MainActivity : AppCompatActivity() {
         btn_et.setOnClickListener {
             val title = JudulEt.text.toString()
             val message = IsiEt.text.toString()
+
+            val etUrl = UrlEt.text.toString()
+            var url = URLEncoder.encode(etUrl)
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                url = "http://$url"
+            }
+            Log.d("urlTag", url)
+
+            val resultIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
             val builder = NotificationCompat.Builder(this,BUTTON1)
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                 .setContentTitle(title)
@@ -41,22 +59,57 @@ class MainActivity : AppCompatActivity() {
                 .setSubText("Pesan Masuk")
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
 
+                .addAction(R.mipmap.ic_launcher,"Open URL",pendingIntent)
+                .setOnlyAlertOnce(true)
+                .setColor(Color.GREEN)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+
             val notification = builder.build()
             notificationManager.notify(1,notification)
+
+            JudulEt.text.clear()
+            IsiEt.text.clear()
+            UrlEt.text.clear()
         }
 
         btn_et2.setOnClickListener {
             val title = JudulEt.text.toString()
             val message = IsiEt.text.toString()
+
+            val etUrl = UrlEt.text.toString()
+            var url = URLEncoder.encode(etUrl)
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                url = "http://$url"
+            }
+            Log.d("urlTag", url)
+
+            val resultIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
             val builder = NotificationCompat.Builder(this,BUTTON2)
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
 
+                .addAction(R.mipmap.ic_launcher,"Open URL",pendingIntent)
+                .setOnlyAlertOnce(true)
+                .setColor(Color.GREEN)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+
             val notification = builder.build()
             notificationManager.notify(2,notification)
+
+            JudulEt.text.clear()
+            IsiEt.text.clear()
+            UrlEt.text.clear()
         }
+
+
 
         createNotificationChannel()
         btn_send.setOnClickListener {
